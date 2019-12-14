@@ -1,2 +1,4 @@
-# Dec-2019
-What I will do in december 2019
+# AI car
+This project is to apply AI to make autonomous car.
+
+ 

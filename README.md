@@ -16,7 +16,7 @@ This project is to apply AI to make autonomous car. The job of car is to finish 
  
  We have designed a car which detect THE WALL with the help of sensors which can be seen in the above image. These sensor's data act as a input to the neural netuork and output of neural network provide direction to car. Now for Neural Network to work properly we need correct set of weights. Here come Genetic Algorithm in picture. Links are provided,in the end, of the sites and videos that inspired and helped us.
  
-## details of files in repo 
+## Details of files in repo 
 
 * car.py -	Class of car.
 * car1.png -	Car image
@@ -33,7 +33,12 @@ This project is to apply AI to make autonomous car. The job of car is to finish 
 * track.png - Track to train car.
 
 ## Issues and Problems
- used fix set of colour for track.
+* Used fix set of colour for track.
+* HyperParameters can be improved.
+* Neural Network may not be perfect(number of layers and nodes).
+ 
+## Future Improvements
+* Control velocity itself.
  
 ## Useful Links
 * [Deep Learning Cars(Unity based)](https://www.youtube.com/watch?v=Aut32pR5PQA)

@@ -85,7 +85,8 @@ while not end:
                 for j in range(len(pixels[k])):
                     if(track.get_at(pixels[k][j]) == white or track.get_at(pixels[k][j]) == red):
                         inputNN[k] +=1/len(pixels[k]);
-                    
+                    else:
+                        break
         except IndexError as error:
             q=1
         output=nNet[i].output(np.matrix(inputNN))

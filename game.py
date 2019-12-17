@@ -6,13 +6,8 @@ Created on Tue Dec 10 13:00:30 2019
 
 import os
 import pygame
-import numpy as np
 from pygame.math import Vector2
-import nn
-import car
-import genotype 
-from sensor import Sensor
-import geneticAlgoModified as ga
+import car 
 
 pygame.init()
 pygame.display.set_caption("AI Car")
@@ -28,11 +23,11 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 image_path = os.path.join(current_dir, "car1.png")
 track = pygame.image.load('track.png')
 
-population_size=10
+population_size=1
 car_image = pygame.image.load(image_path) #car of length 2 and width 1
 cars = []
 for i in range(population_size):
-    cars.append(car.Car(1,2+.1*i))
+    cars.append(car.Car(1,2))
     
 # =============================================================================
 # code for collision
@@ -58,22 +53,6 @@ while not end:
 
 
     for i in range(len(cars)):
-
-# =============================================================================
-        # sensor
-        inputNN=np.zeros(5) # 5 direction of detecting obstacles 
-        pixels = Sensor(cars[i].position * ppu,cars[i].angle)
-        try:
-            for k in range(len(pixels)):
-                for j in range(len(pixels[k])):
-                    if(track.get_at(pixels[k][j]) == white):
-                        inputNN[k] +=1/len(pixels[k]);
-                    
-        except IndexError as error:
-            print("sensor out of screen")
-
-# =============================================================================
-
         cars[i].steering = 0
         if key[pygame.K_RIGHT]:
             cars[i].steering -= 30 * dt

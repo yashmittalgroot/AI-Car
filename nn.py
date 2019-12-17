@@ -22,10 +22,11 @@ class nn:
             self.parameters_count += self.layerNodes[i]*self.layerNodes[i+1]
         
     def setParameters(self,parameters):
-        x=self.layerNodes[0]*self.layerNodes[1]+self.layerNodes[1]
-        y=self.layerNodes[1]*self.layerNodes[2]+self.layerNodes[2]
-        z=self.layerNodes[2]*self.layerNodes[3]+self.layerNodes[3]
-        ind=[0,x,x+y,x+y+z]
+        ind=[0]
+        x=[]
+        for i in range (len(self.layerNodes)-1):
+            x.append(self.layerNodes[i]*self.layerNodes[i+1]+self.layerNodes[i+1])
+            ind.append(sum(x))
         i=0
         a=self.layerNodes
         for layer in self.model.layers:

@@ -11,7 +11,6 @@ import numpy as np
 from pygame.math import Vector2
 import nn
 import car
-import genotype 
 from sensor import Sensor
 import geneticAlgoModified as ga
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -32,16 +31,18 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 image_path = os.path.join(current_dir, "car1.png")
 track = pygame.image.load('track.png')
 
-population_size=10
+population_size=30
 car_image = pygame.image.load(image_path) #car of length 2 and width 1
 cars = []
 nNet = []
 flag = []
-x=1
-y=1.5
+z = [[1,1.5,0],[4,2,270]] # depend on track 
+x=z[0][0]
+y=z[0][1]
+angle =z[0][2]
 for i in range(population_size):
     flag.append(0)
-    cars.append(car.Car(x,y))
+    cars.append(car.Car(x,y,angle))
     nNet.append(nn.nn([5,4,3,2]))
 parameters_count = nNet[0].parameters_count
 gAlgo=ga.GA(parameters_count,population_size)
@@ -84,9 +85,10 @@ while not end:
             for k in range(len(pixels)):
                 for j in range(len(pixels[k])):
                     if(track.get_at(pixels[k][j]) == white or track.get_at(pixels[k][j]) == red):
-                        inputNN[k] +=1/len(pixels[k]);
+                        inputNN[k] +=1/len(pixels[k])
                     else:
                         break
+                    
         except IndexError as error:
             q=1
         output=nNet[i].output(np.matrix(inputNN))
@@ -130,13 +132,13 @@ while not end:
             cars[i].velocity = Vector2(0.0, 0.0)
             cars[i].on = False
 # =============================================================================    
-    screen.blit(font.render(("Gen Count : %s " % gAlgo.GenCount),1,(250,250,250)),(1,300))
+    screen.blit(font.render(("Gen Count : %s " % gAlgo.GenCount),1,(250,0,250)),(1,300))
     if(all_stop == population_size):
         total_time = 0
-        print(gAlgo.GenCount)
+        #print(gAlgo.GenCount)
         gAlgo.GenCount += 1
-        for i in range(population_size):
-            print(gAlgo.currentPopulation[i].fitness)
+        #for i in range(population_size):
+            #print(gAlgo.currentPopulation[i].fitness)
         newPopulation = gAlgo.RecombinationOperator()
         newPopulation = gAlgo.MutationOperator(newPopulation)
         gAlgo.currentPopulation = newPopulation
@@ -144,7 +146,7 @@ while not end:
             #print(gAlgo.currentPopulation[i].fitness)
             flag[i]=0
             nNet[i].setParameters(gAlgo.currentPopulation[i].parameters)
-            cars[i].reset(x,y)
+            cars[i].reset(x,y,angle)
       
     
     pygame.display.flip()

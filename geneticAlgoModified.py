@@ -17,13 +17,13 @@ class GA:
   #       max value of initial population parameters.
         self.maxValue = 3.0
   #       probability of a parameter being swapped during crossover.
-        self.CrossSwapProb = .5
+        self.CrossSwapProb = .6
   #       probability of a parameter being mutated.
-        self.MutationProb = 0.5
+        self.MutationProb = 0.4
   #       amount by which parameters may be mutated.
         self.MutationAmount = 2.0
   #       percent of genotypes in a new population that are mutated
-        self.MutationPerc = 0.5
+        self.MutationPerc = 0.7
         
         self.currentPopulation = []
         for i in range (population_size):
@@ -78,8 +78,6 @@ class GA:
                 best2=temp[i]
             
         return [best1,best2]
-        
-    
     
     def RecombinationOperator(self):
         n=self.population_size

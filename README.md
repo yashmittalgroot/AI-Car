@@ -32,14 +32,22 @@ This project is to apply AI to make autonomous car. The job of car is to finish 
 * sensor.py	- Used to get pixel of each sensor.
 * track.png - Track to train car.
 
-## Issues and Problems
+## Problems we faced and solutions
+* HyperParameters tuning - Probablity of mutation should not be high nor low.  
+* Neural Network may not be perfect(number of layers and nodes and also activation functions)- Used relu and softmax function instead of sigmoid.  
+* Velocity and turning angle of car - After some tuning we get right set of velocity and angle for a particular track.
+
+
+## Issues
 * Used fix set of colour for track.
-* HyperParameters can be improved.
-* Neural Network may not be perfect(number of layers and nodes).
- 
+* Sensor is at discrete locations, so will not get exact location of wall.
+* Car not stable(Wobble too much).
+* Sensor angle and range.
+
 ## Future Improvements
 * Control velocity itself.
- 
+* Make car stable.
+
 ## Useful Links
 * [Deep Learning Cars(Unity based)](https://www.youtube.com/watch?v=Aut32pR5PQA)
 * Fundamentals of the New Artificial Intelligence (Book chapter 4)

@@ -15,6 +15,7 @@ from sensor import Sensor
 import geneticAlgoModified as ga
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
+# setting up pygame environment
 pygame.init()
 pygame.display.set_caption("AI Car")
 width = 1500
@@ -27,15 +28,17 @@ end = False
 ppu = 32 # pixel per unit
 total_time = 0
 
+# Loading image of track and car
 current_dir = os.path.dirname(os.path.abspath(__file__))
 image_path = os.path.join(current_dir, "car1.png")
 track = pygame.image.load('track.png')
-
-population_size=30
 car_image = pygame.image.load(image_path) #car of length 2 and width 1
+
+# Initialization of car location, car, Neural Network , Genetic Algo.
 cars = []
 nNet = []
-flag = []
+flag = [] # To store fitness when car collide.
+population_size=50
 z = [[1,1.5,0],[4,2,270]] # depend on track 
 x=z[0][0]
 y=z[0][1]
@@ -50,16 +53,15 @@ for i in range(population_size):
     nNet[i].setParameters(gAlgo.currentPopulation[i].parameters)
     #gAlgo.currentPopulation[i].parameters = nNet[i].getParameters()
     
-# =============================================================================
-# code for collision
-# checking both front corner
-p1=Vector2(1.0, 0.5)*ppu
-p2=Vector2(1.0, -0.5)*ppu
+# Code for collision
+# Checking only front corners of car 
+p1=Vector2(1.0, 0.5)*ppu #vector to top front cornor from centre
+p2=Vector2(1.0, -0.5)*ppu #vector to bottom front cornor from centre
+# colours used in track
 black=(0,0,0,255)
 green=(0,255,0,255)
 red=(255,0,0,255)
 white=(255,255,255,255)
-# =============================================================================
 
 while not end:
     dt = clock.get_time() / 1000
@@ -111,7 +113,7 @@ while not end:
             p2_rotated= cars[i].position * ppu  + p2.rotate(-cars[i].angle)
             temp1=(int(p1_rotated.x),int(p1_rotated.y))
             temp2=(int(p2_rotated.x),int(p2_rotated.y))
-            if ((track.get_at(temp1) == black) or (track.get_at(temp2) == black)) :
+            if ((track.get_at(temp1) == black) or (track.get_at(temp2) == black)or (track.get_at(temp1) == green) or (track.get_at(temp2) == green)) :
                 if(flag[i]==0):
                     flag[i]=1                   
                     gAlgo.currentPopulation[i].fitness = total_time

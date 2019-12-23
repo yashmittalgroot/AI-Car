@@ -10,38 +10,39 @@ import genotype
 
 class GA:
     def __init__(self,parameters_count,population_size):
+        #genes
         self.parameters_count=parameters_count
+        #population
         self.population_size=population_size
-  #       min value of inital population parameters.
+        #min value of inital population parameters.
         self.minValue = -3.0
-  #       max value of initial population parameters.
+        #max value of initial population parameters.
         self.maxValue = 3.0
-  #       probability of a parameter being swapped during crossover.
+        #probability of a parameter being swapped during crossover.
         self.CrossSwapProb = .6
-  #       probability of a parameter being mutated.
+        #probability of a parameter being mutated.
         self.MutationProb = 0.4
-  #       amount by which parameters may be mutated.
+        #amount by which parameters may be mutated.
         self.MutationAmount = 2.0
-  #       percent of genotypes in a new population that are mutated
-        self.MutationPerc = 0.7
+        #percent of genotypes in a new population that are mutated
+        self.MutationPerc = 0.8
         
         self.currentPopulation = []
         for i in range (population_size):
             self.currentPopulation.append(genotype.Genotype(parameters_count,self.minValue,self.maxValue))
-            
+           
         self.GenCount = 1
-        self.SortPopulation = True
         self.Running = False
         
      
     
-    def crossover(self,parant1,parant2):
+    def crossover(self,parent1,parent2):
         n=self.parameters_count
         para1=np.zeros(n)
         para2=np.zeros(n)
         CrossSwapProb=self.CrossSwapProb
-        ppara1=parant1.parameters
-        ppara2=parant2.parameters
+        ppara1=parent1.parameters
+        ppara2=parent2.parameters
         offspring1 = genotype.Genotype(n,self.minValue,self.maxValue)
         offspring2 = genotype.Genotype(n,self.minValue,self.maxValue)
         for i in range(n):

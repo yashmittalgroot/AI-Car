@@ -14,6 +14,7 @@ import car
 from sensor import Sensor
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
+# setting up pygame environment
 pygame.init()
 pygame.display.set_caption("AI Car")
 width = 1500
@@ -24,35 +25,38 @@ font = pygame.font.Font(None,24)
 ticks = 60
 end = False
 ppu = 32 # pixel per unit
-total_time = 0
 
+# Loading image of track and car
 current_dir = os.path.dirname(os.path.abspath(__file__))
 image_path = os.path.join(current_dir, "car1.png")
 track = pygame.image.load('track.png')
-
-population_size=1
 car_image = pygame.image.load(image_path) #car of length 2 and width 1
+
+# Initialization of car location, car and Neural Network 
 x=1
 y=1.5
-cars = car.Car(x,y)
+car = car.Car(x,y)
 nNet = nn.nn([5,4,3,2])
-parameters_count = nNet.parameters_count
+
+# Importing data and setting weights in neural network
 parameters=np.load("data.npy")
 nNet.setParameters(parameters)
-# =============================================================================
-# code for collision
-# checking both front corner
-p1=Vector2(1.0, 0.5)*ppu
-p2=Vector2(1.0, -0.5)*ppu
+
+# Code for collision
+# Checking only front corners of car 
+p1=Vector2(1.0, 0.5)*ppu #vector to top front cornor from centre
+p2=Vector2(1.0, -0.5)*ppu #vector to bottom front cornor from centre
+# colours used in track
 black=(0,0,0,255)
 green=(0,255,0,255)
 red=(255,0,0,255)
 white=(255,255,255,255)
-# =============================================================================
 
+
+#Game Loop
 while not end:
+    # Simple pygame stuff
     dt = clock.get_time() / 1000
-    total_time += dt
     for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     end = True
@@ -62,10 +66,9 @@ while not end:
         end=True  
     screen.blit(track,[0,0])
 
-        # =============================================================================
-        # sensor
+    # Sensor
     inputNN=np.zeros(5) # 5 direction of detecting obstacles 
-    pixels = Sensor(cars.position * ppu,cars.angle)
+    pixels = Sensor(car.position * ppu, car.angle)
     try:
         for k in range(len(pixels)):
             for j in range(len(pixels[k])):
@@ -74,40 +77,42 @@ while not end:
                 else:
                     break
     except IndexError as error:
-        q=1
+        q=1 # No use of this variable
+    
+    # getting direction for car to turn.
     output=nNet.output(np.matrix(inputNN))
-# =============================================================================
-        #print(output.shape)
-    cars.steering = 0
+
+    car.steering = 0
     if output[0][0]>output[0][1]:
-        cars.steering -= 30 * dt
+        car.steering -= 30 * dt
     else:
-        cars.steering += 30 * dt
-    cars.steering = max(-cars.max_steering, min(cars.steering, cars.max_steering))
-    cars.update(dt)
+        car.steering += 30 * dt
+    car.steering = max(-car.max_steering, min(car.steering, car.max_steering))
+    car.update(dt)
        
-    rotated = pygame.transform.rotate(car_image, cars.angle)
+    rotated = pygame.transform.rotate(car_image, car.angle)
     rect = rotated.get_rect()
-    screen.blit(rotated, cars.position * ppu - (rect.width / 2, rect.height / 2))
+    screen.blit(rotated, car.position * ppu - (rect.width / 2, rect.height / 2))
 # =============================================================================
+    # Checking whether car is on track or not or finished the track
     try:
-        p1_rotated= cars.position * ppu  + p1.rotate(-cars.angle)
-        p2_rotated= cars.position * ppu  + p2.rotate(-cars.angle)
+        p1_rotated= car.position * ppu  + p1.rotate(-car.angle)
+        p2_rotated= car.position * ppu  + p2.rotate(-car.angle)
         temp1=(int(p1_rotated.x),int(p1_rotated.y))
         temp2=(int(p2_rotated.x),int(p2_rotated.y))
         if ((track.get_at(temp1) == black) or (track.get_at(temp2) == black)) :                  
-            cars.on = False
-            cars.velocity = Vector2(0.0, 0.0)
+            car.on = False
+            car.velocity = Vector2(0.0, 0.0)
         elif ((track.get_at(temp1) == red) or (track.get_at(temp2) == red)) :                  
-            cars.on = False
-            cars.velocity = Vector2(0.0, 0.0)
-            cars.is_finished = True
+            car.on = False
+            car.velocity = Vector2(0.0, 0.0)
+            car.is_finished = True
             print(nNet.getParameters())
             end = True
                 
     except IndexError as error:
-        cars.velocity = Vector2(0.0, 0.0)
-        cars.on = False
+        car.velocity = Vector2(0.0, 0.0)
+        car.on = False
 # =============================================================================    
       
     

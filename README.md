@@ -48,8 +48,6 @@ This project is to apply AI to make an autonomous car. The job of the car is to 
 * Control velocity itself.
 * Make car stable.
 * Sensor should cover more angle for sharp turns.
-
-## Useful Links
-* [Deep Learning Cars(Unity based)](https://www.youtube.com/watch?v=Aut32pR5PQA)
-* Fundamentals of the New Artificial Intelligence (Book chapter 4)
-
+## Creators
+* Yash Mittal - https://github.com/yashmittalgroot
+* Aman Pandey - https://github.com/Amanpandey7 

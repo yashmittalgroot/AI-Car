@@ -48,6 +48,6 @@ This project is to apply AI to make an autonomous car. The job of the car is to 
 * Control velocity itself.
 * Make car stable.
 * Sensor should cover more angle for sharp turns.
-## Creators
+## Developers
 * Yash Mittal - https://github.com/yashmittalgroot
 * Aman Pandey - https://github.com/Amanpandey7 
